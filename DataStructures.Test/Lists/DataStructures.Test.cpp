@@ -1,6 +1,6 @@
 #include "CppUnitTest.h"
 #include "..\..\DataStructures\SequenceList.h"
-#include "..\..\DataStructures\SequenceList.cpp"
+#include "..\..\DataStructures\SequenceList.c"
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -10,12 +10,11 @@ namespace DataStructuresTest_Lists
 	{
 	public:
 
-		TEST_METHOD(TestMethod1)
+		TEST_METHOD(TestMethod)
 		{
 			//初始化
 			SequenceList sequenceList;
-			bool result = SequenceList_Init(&sequenceList, 10);
-			Assert::IsTrue(result);
+			Assert::IsTrue(SequenceList_Init(&sequenceList, 10));
 
 			//插入
 			for (int i = 1; i <= 15; i++)
@@ -26,13 +25,18 @@ namespace DataStructuresTest_Lists
 			//查找
 			for (int i = 1; i <= 15; i++)
 			{
-				Assert::AreEqual(i, SequenceList_Get(&sequenceList, i));
+				SequenceListElementType element;
+				Assert::IsTrue(SequenceList_Get(&sequenceList, i, &element));
+				Assert::AreEqual(i, element);
+
+				int index = SequenceList_Index(&sequenceList, element);
+				Assert::AreEqual(i, index);
 			}
 
 			//删除
 			for (int i = 1; i <= 15; i++)
 			{
-				Assert::IsTrue(SequenceList_Delete(&sequenceList, i));
+				Assert::IsTrue(SequenceList_Delete(&sequenceList, 1));
 			}
 			Assert::AreEqual(0, sequenceList.Length);
 		}

@@ -26,7 +26,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SequenceList.cpp">
+    <ClCompile Include="SequenceList.c">
       <Filter>源文件\Lists</Filter>
     </ClCompile>
   </ItemGroup>

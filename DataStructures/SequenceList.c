@@ -8,21 +8,21 @@
 /// <param name="sequenceList"></param>
 /// <param name="maxSize"></param>
 /// <returns></returns>
-bool SequenceList_Init(SequenceList* sequenceList, int maxSize)
+int SequenceList_Init(SequenceList* sequenceList, int maxSize)
 {
 	if (maxSize < 0)
 	{
-		return false;
+		return 0;
 	}
 
 	(*sequenceList).Data = (SequenceListElementType*)malloc(maxSize * sizeof(SequenceListElementType));
 	if (!(*sequenceList).Data)
-		return false;
+		return 0;
 
 	(*sequenceList).Length = 0;
 	(*sequenceList).MaxSize = maxSize;
 
-	return true;
+	return 1;
 }
 
 /// <summary>
@@ -30,11 +30,11 @@ bool SequenceList_Init(SequenceList* sequenceList, int maxSize)
 /// </summary>
 /// <param name="position">从1开始算</param>
 /// <param name="element"></param>
-bool SequenceList_Insert(SequenceList* sequenceList, int position, SequenceListElementType element)
+int SequenceList_Insert(SequenceList* sequenceList, int position, SequenceListElementType element)
 {
 	if (position < 1)
 	{
-		return false;
+		return 0;
 	}
 
 	//若存储空间已满，需开辟新空间 
@@ -43,7 +43,7 @@ bool SequenceList_Insert(SequenceList* sequenceList, int position, SequenceListE
 	{
 		newbase = (SequenceListElementType*)realloc((*sequenceList).Data, ((*sequenceList).MaxSize + position + LISTINCREMENT) * sizeof(SequenceListElementType));
 		if (!newbase)
-			return false;
+			return 0;
 
 		(*sequenceList).Data = newbase;
 		(*sequenceList).MaxSize += LISTINCREMENT;
@@ -59,7 +59,7 @@ bool SequenceList_Insert(SequenceList* sequenceList, int position, SequenceListE
 
 	*q = element;
 	(*sequenceList).Length++;
-	return true;
+	return 1;
 }
 
 /// <summary>
@@ -68,14 +68,35 @@ bool SequenceList_Insert(SequenceList* sequenceList, int position, SequenceListE
 /// <param name="sequenceList"></param>
 /// <param name="position"></param>
 /// <returns></returns>
-SequenceListElementType SequenceList_Get(SequenceList* sequenceList, int position)
+int SequenceList_Get(SequenceList* sequenceList, int position, SequenceListElementType* element)
 {
-	if (position < 1 || position >(*sequenceList).MaxSize)
+	if (position < 1 || position >(*sequenceList).Length)
 	{
-		return false;
+		return 0;
 	}
 
-	return (*sequenceList).Data[position - 1];
+	*element = (*sequenceList).Data[position - 1];
+}
+
+/// <summary>
+/// 获取下标
+/// </summary>
+/// <param name="sequenceList"></param>
+/// <param name="position"></param>
+/// <returns></returns>
+int SequenceList_Index(SequenceList* sequenceList, SequenceListElementType element)
+{
+	int index = 0;
+
+	for (int i = 0; i < (*sequenceList).Length; i++)
+	{
+		if (*((*sequenceList).Data + i) == element)
+		{
+			return i + 1;
+		}
+	}
+
+	return index;
 }
 
 /// <summary>
@@ -84,21 +105,21 @@ SequenceListElementType SequenceList_Get(SequenceList* sequenceList, int positio
 /// <param name="sequenceList"></param>
 /// <param name="position"></param>
 /// <returns></returns>
-bool SequenceList_Delete(SequenceList* sequenceList, int position)
+int SequenceList_Delete(SequenceList* sequenceList, int position)
 {
-	if (position < 1 || position >(*sequenceList).MaxSize)
+	if (position < 1 || position >(*sequenceList).Length)
 	{
-		return false;
+		return 0;
 	}
 
-	SequenceListElementType* startP, * endP;
-	endP = &(*sequenceList).Data[(*sequenceList).Length - 1];
-	for (startP = (*sequenceList).Data + (position - 1); endP >= startP; startP++)
+	SequenceListElementType* start, * end;
+	end = &(*sequenceList).Data[(*sequenceList).Length - 1];
+	for (start = (*sequenceList).Data + (position - 1); end >= start; start++)
 	{
-		*startP = *(startP + 1);
+		*start = *(start + 1);
 	}
 
 	(*sequenceList).Length--;
 
-	return true;
+	return 1;
 }

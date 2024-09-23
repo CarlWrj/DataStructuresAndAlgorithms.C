@@ -142,7 +142,7 @@
     <ClInclude Include="SequenceList.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="SequenceList.cpp" />
+    <ClCompile Include="SequenceList.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
